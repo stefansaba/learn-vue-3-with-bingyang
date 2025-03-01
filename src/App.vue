@@ -1,31 +1,60 @@
 <template>
+  <h1>{{ message }}</h1>
   <div class="card">
-    <h1 ref="title">Hello, Template Refs!</h1>
-    <input type="text" ref="input" />
-    <button @click="printDomElements">Print DOM elements in console log</button>
-    <button @click="changeTitle">Change title</button>
+    <h2 ref="title">This is the App component.</h2>
+    <h2>Number: {{ number }}</h2>
+    <button @click="number++">Increment number by one</button>
+    <button @click="isShow = !isShow">Toggle component1</button>
+    <Component1 v-if="isShow"></Component1>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import {
+  ref,
+  onBeforeMount,
+  onMounted,
+  onBeforeUpdate,
+  onUpdated,
+  onBeforeUnmount,
+  onUnmounted,
+  watch
+} from 'vue'
 
-// declare a ref to hold the element reference
-// the name must match template ref value
-let title = ref()
-const input = ref()
+import Component1 from './Component1.vue'
 
-function printDomElements() {
-  console.log(title.value)
-  console.log(input.value)
-}
+let message = ref('Hello, Lifecycle Hooks!')
 
-function changeTitle() {
-  title.value.innerText = 'Hello world!'
-}
+let number = ref(1)
+let title = ref(null)
 
+let isShow = ref(true)
+
+console.log('App component is setup.')
+
+onBeforeMount(() => {
+  console.log('App component is before mount.')
+  console.log(number.value) // The ref data works.
+  console.log(title.value) // Since the component has not yet been mounted, you won't have access to the component's template or DOM elements within onBeforeMount.
+})
 onMounted(() => {
-  input.value.focus() // programmatically focus an input on component mount
+  console.log('App component is mounted.')
+  console.log(title.value) // This works once the component is mounted.
+})
+onBeforeUpdate(() => {
+  console.log('App component is before update.')
+})
+onUpdated(() => {
+  console.log('App component is updated.')
+})
+onBeforeUnmount(() => {
+  console.log('App component is before unmount.')
+})
+onUnmounted(() => {
+  console.log('App component is unmounted.')
+})
+watch(number, () => {
+  console.log('number changes!')
 })
 </script>
 
