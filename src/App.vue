@@ -21,7 +21,7 @@ import {
   watch
 } from 'vue'
 
-import Component1 from './Component1.vue'
+import Component1 from './Component.vue'
 
 let message = ref('Hello, Lifecycle Hooks!')
 
